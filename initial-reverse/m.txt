@@ -1,0 +1,410 @@
+jusef@Jusef:~/ostep-projects/initial-reverse$ git branch -v
+  master           76cff3f Update README.md
+* project1-reverse f9e45eb fixed to free list memory aftwrards
+jusef@Jusef:~/ostep-projects/initial-reverse$ gcc -std=gnu11 -Wall -Wextra -Wpedantic reverse.c -o reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt
+a file
+is
+this
+hello
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt output.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ nano output.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat output.txt
+a file
+is
+this
+hello
+jusef@Jusef:~/ostep-projects/initial-reverse$ git add reverse.c
+jusef@Jusef:~/ostep-projects/initial-reverse$ git commit -m "saves the reversed input into an output file if given a new file to save outputs to"
+[project1-reverse a9b975d] saves the reversed input into an output file if given a new file to save outputs to
+ 1 file changed, 26 insertions(+), 3 deletions(-)
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt output.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat output.txt
+a file
+is
+this
+hello
+jusef@Jusef:~/ostep-projects/initial-reverse$ gcc -std=gnu11 -Wall -Wextra -Wpedantic -Werror reverse.c -o reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+0
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse < input.txt
+a file
+is
+this
+hello
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt
+a file
+is
+this
+hello
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt output.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat output.txt
+a file
+is
+this
+hello
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse one two three
+usage: reverse <input> <output>
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+1
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse missing.txt
+error: cannot open file 'missing.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+1
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt /missing/folder/output.txt
+error: cannot open file '/missing/folder/output.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+1
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt /missing/folder/output.txt echo $?
+usage: reverse <input> <output>
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse input.txt input.txt
+Input and output file must differ
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+1
+jusef@Jusef:~/ostep-projects/initial-reverse$ : > empty.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse empty.txt empty-output.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ wc -c empty-output.txt
+0 empty-output.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ python3 - <<'PY' with open("long.txt", "w") as file: file.write("A" * 100000 + "\n") file.write("last line\n") PY
+>
+> ./reverse long.txt long-output.txt
+>
+-bash: warning: here-document at line 83 delimited by end-of-file (wanted `PY')
+-bash: syntax error near unexpected token `('
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse long.txt long-output.txt
+error: cannot open file 'long.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ python3 - <<'PY' with open("long.txt", "w") as file: file.write("A" * 100000 + "\n") file.write("last line\n") PY
+> python3 - <<'PY' with open("long.txt", "w") as file: file.write("A" * 100000 + "\n") file.write("last line\n") PY
+>
+-bash: warning: here-document at line 87 delimited by end-of-file (wanted `PY')
+-bash: syntax error near unexpected token `('
+jusef@Jusef:~/ostep-projects/initial-reverse$ git add reverse.c
+jusef@Jusef:~/ostep-projects/initial-reverse$ git commit -m "Complete working version, fixed some little stuff now it works"
+[project1-reverse 9338ea5] Complete working version, fixed some little stuff now it works
+ 1 file changed, 43 insertions(+), 28 deletions(-)
+jusef@Jusef:~/ostep-projects/initial-reverse$ python3 - <<'PY'
+> with open("long.txt", "w") as file: file.write("A" * 100000 + "\n") file.write("last line\n")
+> PY
+  File "<stdin>", line 1
+    with open("long.txt", "w") as file: file.write("A" * 100000 + "\n") file.write("last line\n")
+                                                                        ^^^^
+SyntaxError: invalid syntax
+jusef@Jusef:~/ostep-projects/initial-reverse$ ls
+README.md  empty-output.txt  empty.txt  input.txt  output.txt  reverse  reverse.c  test-reverse.sh  tests
+jusef@Jusef:~/ostep-projects/initial-reverse$ python3 - <<'PY'
+> with open("long.txt", "w") as file:
+>
+README.md         empty.txt         output.txt        reverse.c         tests/
+empty-output.txt  input.txt         reverse           test-reverse.sh
+> file.write("A" * 100000 + "\n")
+> file.write("last line\n")
+> PY
+  File "<stdin>", line 2
+    file.write("A" * 100000 + "\n")
+    ^^^^
+IndentationError: expected an indented block after 'with' statement on line 1
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse long.txt long-output.txt
+error: cannot open file 'long.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com': JusefA
+Password for 'https://JusefA@github.com':
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/jusefa/ostep-projects.git/'
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com': JusefA
+Password for 'https://JusefA@github.com':
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/jusefa/ostep-projects.git/'
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com': JusefA
+Password for 'https://JusefA@github.com':
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/jusefa/ostep-projects.git/'
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com': ^C
+jusef@Jusef:~/ostep-projects/initial-reverse$ GH_DEBUG=api gh auth login -h github.com -p https -w
+Command 'gh' not found, but can be installed with:
+sudo apt install gh
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com': JusefA
+Password for 'https://JusefA@github.com':
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/jusefa/ostep-projects.git/'
+jusef@Jusef:~/ostep-projects/initial-reverse$ ls -la ~/.ssh
+ls: cannot access '/home/jusef/.ssh': No such file or directory
+jusef@Jusef:~/ostep-projects/initial-reverse$ ssh-keygen -t ed25519 -C Jusef03@gmail.com
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/jusef/.ssh/id_ed25519):
+Created directory '/home/jusef/.ssh'.
+Enter passphrase for "/home/jusef/.ssh/id_ed25519" (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/jusef/.ssh/id_ed25519
+Your public key has been saved in /home/jusef/.ssh/id_ed25519.pub
+The key fingerprint is:
+SHA256:HSVnytOyfiPPdhy++a61fd4aPUHV7w8EaRnDzWCo/9w Jusef03@gmail.com
+The key's randomart image is:
++--[ED25519 256]--+
+|          .oOB  o|
+|         ..O*.o o|
+|         .*... ..|
+|        .. =  o .|
+|        S.o  . o |
+|         ..   o.o|
+|          ooo+.++|
+|           =+.E+B|
+|           .o.=OB|
++----[SHA256]-----+
+jusef@Jusef:~/ostep-projects/initial-reverse$ eval "$(ssh-agent -s)"
+Agent pid 77788
+jusef@Jusef:~/ostep-projects/initial-reverse$ ssh-add ~/.ssh/id_ed25519
+Identity added: /home/jusef/.ssh/id_ed25519 (Jusef03@gmail.com)
+jusef@Jusef:~/ostep-projects/initial-reverse$ ssh-add -l
+256 SHA256:HSVnytOyfiPPdhy++a61fd4aPUHV7w8EaRnDzWCo/9w Jusef03@gmail.com (ED25519)
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat ~/.ssh/id_ed25519.pub | clip.exe
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat ~/.ssh/id_ed25519.pub
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIvfHVJsx/36OXKieN3oCTTcN+RQzWALHGJrfD01/qLU Jusef03@gmail.com
+jusef@Jusef:~/ostep-projects/initial-reverse$ ssh -T git@github.com
+The authenticity of host 'github.com (140.82.121.3)' can't be established.
+ED25519 key fingerprint is: SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'github.com' (ED25519) to the list of known hosts.
+Hi JusefA! You've successfully authenticated, but GitHub does not provide shell access.
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com': JusefA
+Password for 'https://JusefA@github.com':
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/jusefa/ostep-projects.git/'
+jusef@Jusef:~/ostep-projects/initial-reverse$ git remote -v
+origin  https://github.com/jusefa/ostep-projects.git (fetch)
+origin  https://github.com/jusefa/ostep-projects.git (push)
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com': jusefa
+Password for 'https://jusefa@github.com':
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/jusefa/ostep-projects.git/'
+jusef@Jusef:~/ostep-projects/initial-reverse$ git branch --show-current
+project1-reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Username for 'https://github.com':
+Password for 'https://github.com':
+remote: No anonymous write access.
+fatal: Authentication failed for 'https://github.com/jusefa/ostep-projects.git/'
+jusef@Jusef:~/ostep-projects/initial-reverse$ git remote -v
+origin  https://github.com/jusefa/ostep-projects.git (fetch)
+origin  https://github.com/jusefa/ostep-projects.git (push)
+jusef@Jusef:~/ostep-projects/initial-reverse$ git remote set-url origin git@github.com:jusefa/ostep-projects.git
+jusef@Jusef:~/ostep-projects/initial-reverse$ git remote -v
+origin  git@github.com:jusefa/ostep-projects.git (fetch)
+origin  git@github.com:jusefa/ostep-projects.git (push)
+jusef@Jusef:~/ostep-projects/initial-reverse$ ssh -T git@github.com
+Hi JusefA! You've successfully authenticated, but GitHub does not provide shell access.
+jusef@Jusef:~/ostep-projects/initial-reverse$ git push -u origin project1-reverse
+Enumerating objects: 26, done.
+Counting objects: 100% (26/26), done.
+Delta compression using up to 6 threads
+Compressing objects: 100% (24/24), done.
+Writing objects: 100% (24/24), 2.96 KiB | 757.00 KiB/s, done.
+Total 24 (delta 16), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (16/16), completed with 1 local object.
+remote: This repository moved. Please use the new location:
+remote:   git@github.com:JusefA/ostep-projects.git
+remote:
+remote: Create a pull request for 'project1-reverse' on GitHub by visiting:
+remote:      https://github.com/JusefA/ostep-projects/pull/new/project1-reverse
+remote:
+To github.com:jusefa/ostep-projects.git
+ * [new branch]      project1-reverse -> project1-reverse
+branch 'project1-reverse' set up to track 'origin/project1-reverse'.
+jusef@Jusef:~/ostep-projects/initial-reverse$ git log --oneline
+9338ea5 (HEAD -> project1-reverse, origin/project1-reverse) Complete working version, fixed some little stuff now it works
+a9b975d saves the reversed input into an output file if given a new file to save outputs to
+f9e45eb fixed to free list memory aftwrards
+f468fd2 stores the lines n all in reverse order but only in terminal
+042a4ce Support input files
+2751221 Read lines from standard input
+76cff3f (origin/master, origin/HEAD, master) Update README.md
+435fd35 slight fix to bitmap size calcs, and more info in superblock on num_inodes and num_data
+6269639 minor clean up
+b95350c mkfs root dir size wrong
+8d2cbee clarify disk image stuff
+685ab5f nit
+2b121db more details in README
+2ea50fd init cut
+135c98f single pass
+4b5e4c9 fsync
+8896e20 Merge branch 'master' of https://github.com/remzi-arpacidusseau/ostep-projects
+650e0ac new sorting project
+f55f672 global clarity
+bbb5693 more clarity
+c363697 more nits
+e68ce06 nits
+582fc28 added more tips
+6615cc2 new init project, cut 1
+a45a400 Update README.md
+a15ca5b feature done
+a0898ae bg done
+2c2b5c4 how to add a key
+4f2691b more background
+3967902 background
+jusef@Jusef:~/ostep-projects/initial-reverse$ rm -f reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ gcc -std=gnu11 -Wall -Wextra -Wpedantic -Werror reverse.c -o reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo #?
+
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+0
+jusef@Jusef:~/ostep-projects/initial-reverse$ ls -l reverse
+-rwxr-xr-x 1 jusef jusef 16696 Jun 22 22:36 reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ printf "hello\nthis\nis\na file\n" > input.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat -n input.txt
+     1  hello
+     2  this
+     3  is
+     4  a file
+jusef@Jusef:~/ostep-projects/initial-reverse$ printf "a file\nis\nthis\nhello\n" > expected.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse one.txt two.txt three.txt > stdout.txt 2> stderr.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+1
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+0
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat stderr.txt
+usage: reverse <input> <output>
+jusef@Jusef:~/ostep-projects/initial-reverse$ wc -c stdout.txt
+0 stdout.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ wc -c stdout.txt
+0 stdout.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+0
+jusef@Jusef:~/ostep-projects/initial-reverse$ ls -a
+.   README.md         empty.txt     input.txt   reverse    stderr.txt  test-reverse.sh
+..  empty-output.txt  expected.txt  output.txt  reverse.c  stdout.txt  tests
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse missing-file.txt > stdout.txt 2> stderr.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+1
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat stderr.txt
+error: cannot open file 'missing-file.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ wc -c stdout.txt
+0 stdout.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ cp input.txt same.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat same.txt
+hello
+this
+is
+a file
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse same.txt same.txt > stdout.txt 2> stderr.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ echo $?
+1
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat stderr.txt
+Input and output file must differ
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat same.txt
+hello
+this
+is
+a file
+jusef@Jusef:~/ostep-projects/initial-reverse$ gcc -std=gnu11 -Wall -Wextra -Wpedantic -Werror -g reverse.c -o reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes ./reverse input.txt valgrind-output.txt
+==97903== Memcheck, a memory error detector
+==97903== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==97903== Using Valgrind-3.26.0 and LibVEX; rerun with -h for copyright info
+==97903== Command: ./reverse input.txt valgrind-output.txt
+==97903==
+==97903==
+==97903== FILE DESCRIPTORS: 3 open (3 inherited) at exit.
+==97903==
+==97903== HEAP SUMMARY:
+==97903==     in use at exit: 0 bytes in 0 blocks
+==97903==   total heap usage: 13 allocs, 13 frees, 9,800 bytes allocated
+==97903==
+==97903== All heap blocks were freed -- no leaks are possible
+==97903==
+==97903== For lists of detected and suppressed errors, rerun with: -s
+==97903== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+jusef@Jusef:~/ostep-projects/initial-reverse$ ls -la
+total 76
+drwxr-xr-x  3 jusef jusef  4096 Jun 23 00:05 .
+drwxr-xr-x 21 jusef jusef  4096 Jun 22 16:53 ..
+-rw-r--r--  1 jusef jusef  6231 Jun 22 14:01 README.md
+-rw-r--r--  1 jusef jusef     0 Jun 22 21:43 empty-output.txt
+-rw-r--r--  1 jusef jusef     0 Jun 22 21:43 empty.txt
+-rw-r--r--  1 jusef jusef    21 Jun 22 23:20 expected.txt
+-rw-r--r--  1 jusef jusef    21 Jun 22 23:11 input.txt
+-rw-r--r--  1 jusef jusef    21 Jun 22 21:41 output.txt
+-rwxr-xr-x  1 jusef jusef 21480 Jun 23 00:05 reverse
+-rw-r--r--  1 jusef jusef  2550 Jun 22 21:40 reverse.c
+-rw-r--r--  1 jusef jusef    21 Jun 23 00:03 same.txt
+-rw-r--r--  1 jusef jusef    34 Jun 23 00:04 stderr.txt
+-rw-r--r--  1 jusef jusef     0 Jun 23 00:04 stdout.txt
+-rwxr-xr-x  1 jusef jusef   130 Jun 22 14:01 test-reverse.sh
+drwxr-xr-x  2 jusef jusef  4096 Jun 22 14:01 tests
+-rw-r--r--  1 jusef jusef    21 Jun 23 00:05 valgrind-output.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ chmod +x test-reverse.sh
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./test-reverse.sh
+test 1: passed
+test 2: 2.err incorrect
+  what results should be found in file: tests/2.err
+  what results produced by your program: tests-out/2.err
+  compare the two using diff, cmp, or related tools to debug, e.g.:
+  prompt> diff tests/2.err tests-out/2.err
+  See tests/2.run for what is being run
+jusef@Jusef:~/ostep-projects/initial-reverse$ ^C
+jusef@Jusef:~/ostep-projects/initial-reverse$ ^C
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat tests/2.run
+./reverse /no/such/file.txt
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat tests/2.err
+reverse: cannot open file '/no/such/file.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ nano test
+test-reverse.sh  tests/           tests-out/
+jusef@Jusef:~/ostep-projects/initial-reverse$ cd tests/
+jusef@Jusef:~/ostep-projects/initial-reverse/tests$ ls
+1.desc  1.rc    2.err  2.run   3.out  4.desc  4.rc    5.err  5.post  5.run   6.in     6.rc    7.err  7.rc
+1.err   1.run   2.out  3.desc  3.rc   4.err   4.run   5.in   5.pre   6.desc  6.other  6.run   7.in   7.run
+1.out   2.desc  2.rc   3.err   3.run  4.out   5.desc  5.out  5.rc    6.err   6.out    7.desc  7.out
+jusef@Jusef:~/ostep-projects/initial-reverse/tests$ ls -a
+.       1.err  1.run   2.out  3.desc  3.rc    4.err  4.run   5.in    5.pre  6.desc  6.other  6.run   7.in   7.run
+..      1.out  2.desc  2.rc   3.err   3.run   4.out  5.desc  5.out   5.rc   6.err   6.out    7.desc  7.out
+1.desc  1.rc   2.err   2.run  3.out   4.desc  4.rc   5.err   5.post  5.run  6.in    6.rc     7.err   7.rc
+jusef@Jusef:~/ostep-projects/initial-reverse/tests$ cat 2.err
+reverse: cannot open file '/no/such/file.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse/tests$ cd ..
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat tests/2.err
+reverse: cannot open file '/no/such/file.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ cat tests/2.err
+reverse: cannot open file '/no/such/file.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ nano tests/2.err
+jusef@Jusef:~/ostep-projects/initial-reverse$ diff -u tests/2.err tests-out/2.err
+--- tests/2.err 2026-06-22 14:01:03.632503700 +0300
++++ tests-out/2.err     2026-06-23 00:06:46.604541560 +0300
+@@ -1 +1 @@
+-reverse: cannot open file '/no/such/file.txt'
++error: cannot open file '/no/such/file.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ gcc -std=gnu11 -Wall -Wextra -Wpedantic -Werror reverse.c -o reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./reverse /no/such/file.txt
+reverse: cannot open file '/no/such/file.txt'
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./test-reverse.sh
+test 1: passed
+test 2: passed
+test 3: passed
+test 4: 4.err incorrect
+  what results should be found in file: tests/4.err
+  what results produced by your program: tests-out/4.err
+  compare the two using diff, cmp, or related tools to debug, e.g.:
+  prompt> diff tests/4.err tests-out/4.err
+  See tests/4.run for what is being run
+jusef@Jusef:~/ostep-projects/initial-reverse$ diff -u tests/2.err tests-out/2.err
+jusef@Jusef:~/ostep-projects/initial-reverse$ diff -u tests/4.err tests-out/4.err
+--- tests/4.err 2026-06-22 14:01:03.636503446 +0300
++++ tests-out/4.err     2026-06-23 01:05:29.409830458 +0300
+@@ -1 +1 @@
+-reverse: input and output file must differ
++Input and output file must differ
+jusef@Jusef:~/ostep-projects/initial-reverse$ gcc -std=gnu11 -Wall -Wextra -Wpedantic -Werror reverse.c -o reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ gcc -std=gnu11 -Wall -Wextra -Wpedantic -Werror reverse.c -o reverse
+jusef@Jusef:~/ostep-projects/initial-reverse$ ./test-reverse.sh
+test 1: passed
+test 2: passed
+test 3: passed
+test 4: passed
+test 5: passed
+test 6: passed
+test 7: passed
+jusef@Jusef:~/ostep-projects/initial-reverse$
